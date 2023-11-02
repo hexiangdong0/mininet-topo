@@ -124,7 +124,9 @@ def configure_policy_routes(net, routes):
         for i, (intf, gw) in enumerate(gws.items()):
             h.cmd(f'ip rule add from {h.IP(intf=intf)} table {i + 1}')
             h.cmd(f'ip route add default via {getIntf(h.name, gw)[1].IP()} table {i + 1}')
-        h.cmd(f'route add default gw {getIntf(h.name, gw)[1].IP()} dev {getIntf(h.name, gw)[0].name}')
+            if getIntf(h.name, gw)[0].name.find('eth0') >= 0:
+                h.cmd(f'route add default gw {getIntf(h.name, gw)[1].IP()} dev {getIntf(h.name, gw)[0].name}')
+        # h.cmd(f'route add default gw {getIntf(h.name, gw)[1].IP()} dev {getIntf(h.name, gw)[0].name}')
 
     for route in routes:
         h = route.split('=')

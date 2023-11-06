@@ -138,7 +138,11 @@ def configure_policy_routes(net, routes):
             setForward(h[i])
             addRoute(h[i], h[i - 1], src)
             addRoute(h[i], h[i + 1], dst)
-    
+
+def capturePackets(host):
+    # 抓取`host`上的所有包
+    for intf in host.intfList():
+        host.cmd(f'tcpdump -XX -n -i {intf.name} -w {intf.name}.pcap &')
 
 def run(algo):
     topo = CustomTopo()
